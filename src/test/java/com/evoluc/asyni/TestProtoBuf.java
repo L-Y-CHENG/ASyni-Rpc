@@ -1,17 +1,12 @@
 package com.evoluc.asyni;
 
-import com.evoluc.asyni.proto.TestMessage;
-import com.evoluc.asyni.util.SerializingUtil;
-import com.google.common.primitives.Bytes;
-import com.google.protobuf.InvalidProtocolBufferException;
-import org.junit.Assert;
+import com.evoluc.asyni.util.ProtostuffSerializingUtil;
 import org.junit.Test;
-
 
 public class TestProtoBuf {
 
     @Test
-    public void testProtoBuf () throws InvalidProtocolBufferException {
+    public void testProtoBuf () {
 //        final TestMessage.ReqProto.Builder builder = TestMessage.ReqProto.newBuilder();
 //        builder.setUid(1L).setText("I Want My Tears Back").setType(3);
 //
@@ -31,18 +26,21 @@ public class TestProtoBuf {
 //        System.out.println("after Text:" + formProto.getText());
 //        System.out.println("after Type:" + formProto.getType());
     }
-    
-    class test {
-        String t;
-        Integer i;
-    }
-
 
     @Test
     public void testProtoStuff() {
-        String expect = "hello, world.";
-        byte[] serialized = SerializingUtil.serialize(expect);
-        Assert.assertEquals(SerializingUtil.deserialize(serialized, String.class), expect);
+        TestParams testParams = TestParams.builder().testInt(2).testString(">>>>>>>>>>>>>").build();
+        byte[] serialized = ProtostuffSerializingUtil.serializeObject(testParams);
+        TestParams testParams1 = ProtostuffSerializingUtil.deserialize(serialized, TestParams.class);
+        System.out.println(serialized.length);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>");
+        for (byte b : serialized){
+            System.out.print("{"+b+"} ");
+        }
+        System.out.println();
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>");
+        System.out.println(testParams1.getTestInt());
+        System.out.println(testParams1.getTestString());
     }
 
 

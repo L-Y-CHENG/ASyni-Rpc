@@ -7,6 +7,18 @@
     <groupId>cn.evoluc</groupId>
     <artifactId>ASyni-Rpc</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,6 +28,20 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.smartboot.socket</groupId>
+            <artifactId>aio-core</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+
+        <!--protostuff-->
         <dependency>
             <groupId>com.dyuproject.protostuff</groupId>
             <artifactId>protostuff-core</artifactId>
@@ -28,72 +54,20 @@
             <version>1.1.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
+        <!--guava-->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>28.1-jre</version>
         </dependency>
 
+        <!--lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+        </dependency>
     </dependencies>
-
-    <!--<build>-->
-        <!--<extensions>-->
-            <!--<extension>-->
-                <!--<groupId>kr.motd.maven</groupId>-->
-                <!--<artifactId>os-maven-plugin</artifactId>-->
-                <!--<version>1.5.0.Final</version>-->
-            <!--</extension>-->
-        <!--</extensions>-->
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.xolstice.maven.plugins</groupId>-->
-                <!--<artifactId>protobuf-maven-plugin</artifactId>-->
-                <!--<version>0.6.1</version>-->
-                <!--<extensions>true</extensions>-->
-                <!--<configuration>-->
-                    <!--<protoSourceRoot>${project.basedir}/src/main/resources/proto</protoSourceRoot>-->
-                    <!--&lt;!&ndash;默认值&ndash;&gt;-->
-                    <!--&lt;!&ndash;<outputDirectory>${project.build.directory}/generated-sources/protobuf/java</outputDirectory>&ndash;&gt;-->
-                    <!--<outputDirectory>${project.build.sourceDirectory}</outputDirectory>-->
-                    <!--&lt;!&ndash;设置是否在生成java文件之前清空outputDirectory的文件，默认值为true，设置为false时也会覆盖同名文件&ndash;&gt;-->
-                    <!--<clearOutputDirectory>false</clearOutputDirectory>-->
-                    <!--&lt;!&ndash;默认值&ndash;&gt;-->
-                    <!--<temporaryProtoFileDirectory>${project.build.directory}/generated-sources/protobuf/java</temporaryProtoFileDirectory>-->
-                    <!--&lt;!&ndash;更多配置信息可以查看https://www.xolstice.org/protobuf-maven-plugin/compile-mojo.html&ndash;&gt;-->
-                    <!--<protocArtifact>-->
-                        <!--com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}-->
-                    <!--</protocArtifact>-->
-                <!--</configuration>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<goals>-->
-                            <!--<goal>compile</goal>-->
-                            <!--<goal>test-compile</goal>-->
-                        <!--</goals>-->
-                        <!--&lt;!&ndash;也可以设置成局部变量，执行compile或test-compile时才执行&ndash;&gt;-->
-                        <!--&lt;!&ndash;<configuration>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<outputDirectory>${project.build.directory}/generated-sources/protobuf/java</outputDirectory>&ndash;&gt;-->
-
-                        <!--&lt;!&ndash;</configuration>&ndash;&gt;-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-compiler-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<source>8</source>-->
-                    <!--<target>8</target>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
-    <!--</build>-->
 
 
 </project>
