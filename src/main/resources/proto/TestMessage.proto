@@ -1,0 +1,11 @@
+syntax ="proto3";
+
+//optimize_for 加快解析的速度
+option optimize_for = SPEED;
+option java_package = "com.evoluc.asyni.proto";
+
+message ReqProto{
+    int32 type = 1;
+    uint64 uid = 2;
+    string text = 3;
+}
