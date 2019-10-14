@@ -1,4 +1,4 @@
-package com.evoluc.asyni.rpc;
+package com.evoluc.asyni.rpc.server;
 
 import com.evoluc.asyni.common.ProtostuffSerializer;
 import com.evoluc.asyni.common.Serializer;

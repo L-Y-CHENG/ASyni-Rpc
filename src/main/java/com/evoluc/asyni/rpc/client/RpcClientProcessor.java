@@ -1,4 +1,4 @@
-package com.evoluc.asyni.rpc;
+package com.evoluc.asyni.rpc.client;
 
 import com.evoluc.asyni.common.ProtostuffSerializer;
 import com.evoluc.asyni.common.Serializer;
@@ -8,16 +8,15 @@ import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
-import java.net.SocketTimeoutException;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 public class RpcClientProcessor implements MessageProcessor<byte[]> {
 
 
-    private Map<Long, CompletableFuture<RpcResponse>> synchRespMap = new ConcurrentHashMap<>();
+    private Map<Long, CompletableFuture<Object>> synchRespMap = new ConcurrentHashMap<>();
+
     private Map<Class, Object> objectMap = new ConcurrentHashMap<>();
     private AioSession<byte[]> aioSession;
 
@@ -38,9 +37,9 @@ public class RpcClientProcessor implements MessageProcessor<byte[]> {
 
     }
 
-    public final RpcResponse send(RpcRequest request) throws Exception {
-        CompletableFuture<RpcResponse> rpcResponseCompletableFuture = new CompletableFuture<>();
-        synchRespMap.put(request.getId(), rpcResponseCompletableFuture);
+    final void send(RpcRequest request, RequestPromise promise) throws Exception {
+        CompletableFuture future = promise.getFuture();
+        synchRespMap.put(request.getId(), future);
 
         //输出消息
         byte[] data = serializer.serialize(request);
@@ -49,11 +48,6 @@ public class RpcClientProcessor implements MessageProcessor<byte[]> {
             aioSession.writeBuffer().writeInt(data.length + 4);
             aioSession.writeBuffer().write(data);
             aioSession.writeBuffer().flush();
-        }
-        try {
-            return rpcResponseCompletableFuture.get(3, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            throw new SocketTimeoutException("Message is timeout!");
         }
     }
 

@@ -1,4 +1,4 @@
-package com.evoluc.asyni.rpc;
+package com.evoluc.asyni.rpc.server;
 
 import java.util.HashMap;
 import java.util.Map;
