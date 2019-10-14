@@ -3,6 +3,7 @@ package com.evoluc.asyni.rpc;
 
 import com.evoluc.asyni.common.entity.RpcRequest;
 import com.evoluc.asyni.rpc.client.RequestPromise;
+import com.evoluc.asyni.rpc.client.RpcClientProcessor;
 import com.evoluc.asyni.rpc.client.RpcClientTransport;
 import com.evoluc.asyni.util.SnowflakeIdWorker;
 import lombok.Data;
@@ -15,7 +16,12 @@ public class RpcInvocationHandler<T> implements InvocationHandler {
 
     private RpcClientTransport clientTransport;
 
-    private RequestPromise<T> requestPromise;
+    private RequestPromise<T> promise;
+
+    public RpcInvocationHandler (RpcClientTransport clientTransport, RequestPromise<T> promise) {
+        this.clientTransport = clientTransport;
+        this.promise = promise;
+    }
 
     @Override
     public Object invoke (Object proxy, Method method, Object[] args) throws Throwable {
@@ -31,10 +37,14 @@ public class RpcInvocationHandler<T> implements InvocationHandler {
                 .args(args)
                 .id(SnowflakeIdWorker.defaultNextId())
                 .build();
-        clientTransport.send(request, requestPromise);
 
+        RpcClientProcessor clientProcessor = clientTransport.getClientProcessor();
 
-        return requestPromise.getFuture().get();
+        clientProcessor.synchRespMap.put(request.getId(), promise.getFuture());
+
+        clientTransport.send(request);
+
+        return promise.getFuture().get();
     }
 
 

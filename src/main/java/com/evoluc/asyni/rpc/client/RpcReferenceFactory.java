@@ -27,15 +27,6 @@ public class RpcReferenceFactory {
 
 
     public <T> T create(Class<T> referenceType) throws RpcException {
-        return create(referenceType, null ,null);
-    }
-
-    public <T> T create(Class<T> referenceType, Consumer<T> onSuccess) throws RpcException {
-        return create(referenceType, onSuccess ,null);
-
-    }
-
-    public <T> T create(Class<T> referenceType, Consumer<T> onSuccess, Consumer<Throwable> onFailure) throws RpcException {
         if (referenceType == null){throw new NullPointerException("[referenceType]不能为空"); }
         if (!referenceType.isInterface()) {
             throw new RpcException(String.format("[%s]不是接口类型", referenceType));
@@ -49,16 +40,9 @@ public class RpcReferenceFactory {
 
         RpcClientTransport clientTransport = discoverer.load();
         RequestPromise<T> requestPromise = new RequestPromise<>(new CompletableFuture<>());
-        if (onSuccess != null){
-            requestPromise.setOnSuccess(onSuccess);
-        }
-        if (onFailure != null){
-            requestPromise.setOnFailure(onFailure);
-        }
 
-        RpcInvocationHandler<T> invocationHandler = new RpcInvocationHandler<T>();
-        invocationHandler.setClientTransport(clientTransport);
-        invocationHandler.setRequestPromise(requestPromise);
+        RpcInvocationHandler<T> invocationHandler = new RpcInvocationHandler<T>(clientTransport, requestPromise);
+
 
         T obj = referenceType.cast(Proxy
                 .newProxyInstance(

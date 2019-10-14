@@ -15,9 +15,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RpcClientProcessor implements MessageProcessor<byte[]> {
 
 
-    private Map<Long, CompletableFuture<Object>> synchRespMap = new ConcurrentHashMap<>();
+    public Map<Long, CompletableFuture<RpcResponse>> synchRespMap = new ConcurrentHashMap<>();
 
-    private Map<Class, Object> objectMap = new ConcurrentHashMap<>();
+//    public Map<Class, Object> objectMap = new ConcurrentHashMap<>();
+
     private AioSession<byte[]> aioSession;
 
     private Serializer serializer = new ProtostuffSerializer();
@@ -27,6 +28,7 @@ public class RpcClientProcessor implements MessageProcessor<byte[]> {
         try {
             RpcResponse response =serializer.deserialize(msg, RpcResponse.class);
             synchRespMap.get(response.getId()).complete(response);
+            synchRespMap.remove(response.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,9 +39,7 @@ public class RpcClientProcessor implements MessageProcessor<byte[]> {
 
     }
 
-    final void send(RpcRequest request, RequestPromise promise) throws Exception {
-        CompletableFuture future = promise.getFuture();
-        synchRespMap.put(request.getId(), future);
+    final void send(RpcRequest request) throws Exception {
 
         //输出消息
         byte[] data = serializer.serialize(request);

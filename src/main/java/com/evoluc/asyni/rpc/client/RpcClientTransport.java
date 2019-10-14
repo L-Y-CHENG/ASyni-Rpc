@@ -3,6 +3,7 @@ package com.evoluc.asyni.rpc.client;
 import com.evoluc.asyni.common.entity.RpcRequest;
 import com.evoluc.asyni.common.exception.RpcException;
 import com.evoluc.asyni.rpc.RpcProtocol;
+import lombok.Getter;
 import org.smartboot.socket.transport.AioQuickClient;
 
 import java.io.IOException;
@@ -12,8 +13,17 @@ import java.util.concurrent.ExecutionException;
 public class RpcClientTransport {
 
     private AioQuickClient client;
-    private RpcClientProcessor clientProcessor = new RpcClientProcessor();
-    private boolean running = false;
+
+    @Getter
+    private RpcClientProcessor clientProcessor;
+
+    @Getter
+    private boolean running;
+
+    {
+        clientProcessor = new RpcClientProcessor();
+        running = false;
+    }
 
 
     public void connect(InetSocketAddress address) throws IOException, ExecutionException, InterruptedException {
@@ -28,10 +38,10 @@ public class RpcClientTransport {
         }
     }
 
-    public void send(RpcRequest request, RequestPromise promise) throws RpcException {
-        if (!running) throw new RpcException("客户端为开启");
+    public void send(RpcRequest request) throws RpcException {
+        if (!running) throw new RpcException("客户端未开启");
         try {
-            clientProcessor.send(request, promise);
+            clientProcessor.send(request);
         }catch (Exception e){
             throw new RpcException("客户端发送异常");
         }
