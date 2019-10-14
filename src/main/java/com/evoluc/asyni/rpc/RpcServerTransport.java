@@ -7,10 +7,10 @@ import java.net.InetSocketAddress;
 
 public class RpcServerTransport {
 
-    private  AioQuickServer<byte[]> server;
+    private AioQuickServer<byte[]> server;
+    private RpcServerProcessor rpcServerProcessor = new RpcServerProcessor();
 
     public void start(InetSocketAddress address) throws IOException {
-        RpcServerProcessor rpcServerProcessor = new RpcServerProcessor();
         server = new AioQuickServer<>(address.getPort(), new RpcProtocol(), rpcServerProcessor);
         server.start();
     }
@@ -20,5 +20,7 @@ public class RpcServerTransport {
             server.shutdown();
         }
     }
+
+
 
 }

@@ -1,7 +1,7 @@
 package com.evoluc.asyni.common;
 
-public interface Function {
+public interface Function<F, T> {
 
-    void invoke();
+        T apply(F var);
 
 }

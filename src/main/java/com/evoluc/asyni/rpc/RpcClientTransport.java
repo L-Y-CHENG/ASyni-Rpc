@@ -9,10 +9,10 @@ import java.util.concurrent.ExecutionException;
 public class RpcClientTransport {
 
     private AioQuickClient client;
+    private RpcClientProcessor clientProcessor = new RpcClientProcessor();
 
 
     public void connect(InetSocketAddress address) throws IOException, ExecutionException, InterruptedException {
-        RpcClientProcessor clientProcessor = new RpcClientProcessor();
         client = new AioQuickClient<>(address.getHostName(), address.getPort(), new RpcProtocol(), clientProcessor);
         client.start();
     }
