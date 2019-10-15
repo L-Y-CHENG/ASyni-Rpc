@@ -58,9 +58,12 @@ public class RpcServerProcessor implements MessageProcessor<byte[]> {
 
     @Override
     public void stateEvent (AioSession<byte[]> aioSession, StateMachineEnum stateMachineEnum, Throwable throwable) {
-
+        switch (stateMachineEnum) {
+            case NEW_SESSION:
+                //新连接
+                break;
+        }
     }
-
 
     /**
      * 服务调用
@@ -81,4 +84,9 @@ public class RpcServerProcessor implements MessageProcessor<byte[]> {
     public final void addService(RpcRequestKey requestKey, RpcServerBody serverBody) {
         relationMap.put(requestKey, serverBody);
     }
+
+    public final void clear(){
+        relationMap.clear();
+    }
+
 }

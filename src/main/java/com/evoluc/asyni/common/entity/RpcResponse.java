@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class RpcResponse {
 
     /**
@@ -24,6 +23,8 @@ public class RpcResponse {
         this.id = id;
     }
 
+
+
     /**
      * 是否调用异常
      *
@@ -32,5 +33,6 @@ public class RpcResponse {
     public boolean hasError() {
         return exception != null;
     }
+
 
 }

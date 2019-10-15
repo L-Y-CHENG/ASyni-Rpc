@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
 
 public class RpcClientTransport {
 
-    private AioQuickClient client;
+    private AioQuickClient<byte[]> client;
 
     @Getter
     private RpcClientProcessor clientProcessor;
@@ -38,12 +38,14 @@ public class RpcClientTransport {
         }
     }
 
-    public void send(RpcRequest request) throws RpcException {
+    public void send (RpcRequest request, RequestPromise<?> promise) throws RpcException {
         if (!running) throw new RpcException("客户端未开启");
         try {
+            clientProcessor.getFutureMap().put(request.getId(), promise.getResponseFuture());
             clientProcessor.send(request);
         }catch (Exception e){
-            throw new RpcException("客户端发送异常");
+            e.printStackTrace();
+            throw new RpcException(e.getMessage());
         }
     }
 

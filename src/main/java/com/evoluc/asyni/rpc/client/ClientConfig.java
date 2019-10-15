@@ -1,9 +1,10 @@
-package com.evoluc.asyni.common.config;
+package com.evoluc.asyni.rpc.client;
 
 import lombok.Data;
 
+
 @Data
-public class ServerConfig {
+public class ClientConfig {
 
     /**
      * 超时时间，单位秒
@@ -11,9 +12,9 @@ public class ServerConfig {
     private int timeout = 5;
 
     /**
-     * 注册地址
+     * 空闲超时时间，单位秒
      */
-    private String registryAddress;
+    private int idleTimeout = 120;
 
     /**
      * 绑定主机
@@ -24,13 +25,9 @@ public class ServerConfig {
      */
     private final int port;
 
-    public ServerConfig (int port) {
-        this("127.0.0.1", port);
-    }
 
-    public ServerConfig (String host, int port) {
+    public ClientConfig (String host, int port) {
         this.host = host;
         this.port = port;
     }
-    
 }

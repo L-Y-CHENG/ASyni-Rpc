@@ -27,5 +27,9 @@ public class RpcRequest {
      * 入参参数
      */
     private Object[] args;
+    /**
+     * 服务名称
+     */
+    private String name;
 
 }

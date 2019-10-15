@@ -4,6 +4,7 @@ import com.evoluc.asyni.common.ProtostuffSerializer;
 import com.evoluc.asyni.common.Serializer;
 import com.evoluc.asyni.common.entity.RpcRequest;
 import com.evoluc.asyni.common.entity.RpcResponse;
+import lombok.Getter;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
@@ -14,8 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class RpcClientProcessor implements MessageProcessor<byte[]> {
 
-
-    public Map<Long, CompletableFuture<RpcResponse>> synchRespMap = new ConcurrentHashMap<>();
+    @Getter
+    private Map<Long, CompletableFuture<RpcResponse>> futureMap = new ConcurrentHashMap<>();
 
 //    public Map<Class, Object> objectMap = new ConcurrentHashMap<>();
 
@@ -27,8 +28,8 @@ public class RpcClientProcessor implements MessageProcessor<byte[]> {
     public void process (AioSession<byte[]> aioSession, byte[] msg) {
         try {
             RpcResponse response =serializer.deserialize(msg, RpcResponse.class);
-            synchRespMap.get(response.getId()).complete(response);
-            synchRespMap.remove(response.getId());
+            futureMap.get(response.getId()).complete(response);
+            futureMap.remove(response.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,7 +37,11 @@ public class RpcClientProcessor implements MessageProcessor<byte[]> {
 
     @Override
     public void stateEvent (AioSession<byte[]> aioSession, StateMachineEnum stateMachineEnum, Throwable throwable) {
-
+        switch (stateMachineEnum) {
+            case NEW_SESSION:
+                this.aioSession = aioSession;
+                break;
+        }
     }
 
     final void send(RpcRequest request) throws Exception {
