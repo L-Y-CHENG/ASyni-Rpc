@@ -15,7 +15,7 @@ public class Consumer {
         RpcDiscoverer discoverer = new RpcDiscoverer();
         RpcReferenceFactory factory = new RpcReferenceFactory(config, discoverer.init(config));
 
-        HelloServer helloServer = factory.wrap(HelloServer.class);
+        HelloServer helloServer = factory.wrap(HelloServer.class,"two");
         String s = helloServer.hello("world");
         System.out.println(s);
     }
