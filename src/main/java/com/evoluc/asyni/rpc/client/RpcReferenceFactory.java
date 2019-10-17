@@ -8,7 +8,6 @@ import com.evoluc.asyni.util.ClassUtils;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
-import java.io.IOException;
 import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 import java.util.HashMap;

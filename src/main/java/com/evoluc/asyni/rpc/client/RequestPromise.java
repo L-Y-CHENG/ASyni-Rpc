@@ -2,7 +2,6 @@ package com.evoluc.asyni.rpc.client;
 
 import com.evoluc.asyni.common.entity.RpcResponse;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.concurrent.CompletableFuture;
 

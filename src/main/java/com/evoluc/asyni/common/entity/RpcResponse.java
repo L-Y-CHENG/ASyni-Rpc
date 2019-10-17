@@ -1,6 +1,5 @@
 package com.evoluc.asyni.common.entity;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
